@@ -3,7 +3,7 @@
  * 应用结构模块
  * @author wfx
  * @datetime 2018-10-21 16:19
- * @describe  学习yii2的应用结构模块的内容
+ * @describe  学习yii2的应用结构模块的内容  入口脚本  应用  全局属性 应用事件
  * @version v1.0.0
  */
 namespace app\controllers;
@@ -513,6 +513,108 @@ class AppStructureController extends Controller {
                 该属性仅 console applications 控制台应用支持， 用来指定是否启用 Yii 中的核心命令，默认值为 true。
                  * */
             }
+
+            /*---------------------------应用事件-------------------------------------------*/
+
+            //应用事件
+            /*
+                应用在处理请求过程中会触发事件，可以在配置文件配置事件处理代码， 如下所示：
+
+                [
+                    'on beforeRequest' => function ($event) {
+                        // ...
+                    },
+                ]
+                on eventName 语法的用法在 Configurations 一节有详细描述.
+
+                另外，在应用主体实例化后，你可以在 引导启动 阶段附加事件处理代码， 例如：
+
+                \Yii::$app->on(\yii\base\Application::EVENT_BEFORE_REQUEST, function ($event) {
+                    // ...
+                });
+             * */
+                //EVENT_BEFORE_REQUEST事件
+                public function EVENT_BEFORE_REQUEST(){
+
+                    /*
+                     在事件触发前，应用主体已经实例化并配置好了， 所以通过事件机制将你的代码嵌入到请求处理过程中非常不错。
+                     例如在事件处理中根据某些参数动态设置 yii\base\Application::$language 语言属性。
+                     * */
+                }
+
+                //EVENT_AFTER_REQUEST 事件
+                public function EVENT_AFTER_REQUEST(){
+
+                    /*
+                   该事件在应用处理请求 after 之后但在返回响应 before 之前触发， 实际的事件名为 afterRequest。
+
+                    该事件触发时，请求已经被处理完， 可以做一些请求后处理或自定义响应。
+
+                    注意 response 组件在发送响应给终端用户时也会触发一些事件， 这些事件都在本事件 after 之后触发。
+                     * */
+                }
+
+                //EVENT_BEFORE_ACTION  事件
+                public function EVENT_BEFORE_ACTION (){
+
+                    /*
+                   该事件在每个 控制器动作 运行before之前会被触发， 实际的事件名为 beforeAction.
+
+                    事件的参数为一个 yii\base\ActionEvent 实例， 事件处理中可以设置yii\base\ActionEvent::$isValid 为 false 停止运行后续动作， 例如：
+
+                    [
+                        'on beforeAction' => function ($event) {
+                            if (some condition) {
+                                $event->isValid = false;
+                            } else {
+                            }
+                        },
+                    ]
+                    注意 模块 和 控制器 都会触发 beforeAction 事件。
+                    应用主体对象首先触发该事件，然后模块触发（如果存在模块），最后控制器触发。
+                     任何一个事件处理中设置 yii\base\ActionEvent::$isValid 设置为 false 会停止触发后面的事件。
+                     * */
+                }
+
+                //EVENT_AFTER_ACTION  事件
+                public function EVENT_AFTER_ACTION (){
+
+                    /*
+                该事件在每个 控制器动作 运行after之后会被触发， 实际的事件名为 afterAction.
+
+                该事件的参数为 yii\base\ActionEvent 实例， 通过 yii\base\ActionEvent::$result 属性， 事件处理可以访问和修改动作的结果。例如：
+
+                [
+                    'on afterAction' => function ($event) {
+                        if (some condition) {
+                            // 修改 $event->result
+                        } else {
+                        }
+                    },
+                ]
+                    注意 模块 和 控制器 都会触发 afterAction 事件。
+                     这些对象的触发顺序和 beforeAction 相反，也就是说， 控制器最先触发，然后是模块（如果有模块），最后为应用主体。
+                     * */
+                }
+
+                /*
+
+                当运行 入口脚本 处理请求时， 应用主体会经历以下生命周期:
+
+                入口脚本加载应用主体配置数组。
+                入口脚本创建一个应用主体实例：
+                调用 preInit() 配置几个高级别应用主体属性， 比如 basePath。
+                注册 error handler 错误处理方法.
+                配置应用主体属性.
+                调用 init() 初始化，该函数会调用 bootstrap() 运行引导启动组件.
+                入口脚本调用 yii\base\Application::run() 运行应用主体:
+                触发 EVENT_BEFORE_REQUEST 事件。
+                处理请求：解析请求 路由 和相关参数； 创建路由指定的模块、控制器和动作对应的类，并运行动作。
+                触发 EVENT_AFTER_REQUEST 事件。
+                发送响应到终端用户.
+                入口脚本接收应用主体传来的退出状态并完成请求的处理。
+
+                 * */
 
 
 
