@@ -6,12 +6,12 @@ $db = require __DIR__ . '/db.php';
 $config = [
     'id' => 'basic',
     'basePath' => dirname(__DIR__),
-    'bootstrap' => ['log'],
-    'aliases' => [
+    'bootstrap' => ['log'], //配置启动组件
+    'aliases' => [ //配置重命名属性
         '@bower' => '@vendor/bower-asset',
         '@npm'   => '@vendor/npm-asset',
     ],
-    'components' => [
+    'components' => [ //注册组件或者配置   每一个应用组件指定一个key-value对的数组，key代表组件ID， value代表组件类名或 配置。
         'request' => [
             // !!! insert a secret key in the following (if it is empty) - this is required by cookie validation
             'cookieValidationKey' => 'wfx',
@@ -89,5 +89,6 @@ if (YII_ENV_DEV) {
         // uncomment the following to add your IP if you are not connecting from localhost.
         'allowedIPs' => ['127.0.0.1', '::1','192.168.*.*'],
     ];
+    $config['language']='zh-CN';
 }
 return $config;
