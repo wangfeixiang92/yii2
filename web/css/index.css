@@ -1,0 +1,31 @@
+body{
+    background-color: #F0F2F5;
+}
+#header .font-logo{
+    font-weight: bold;
+    color:#f4645f;
+}
+#header .login-btn{
+    font-size: 0.5rem;
+}
+#header .login-btn:hover{
+    color: #f4645f;
+}
+#header .login-btn-active{
+    color: #f4645f;
+}
+#banner{
+    background-color: #333333;
+    height: 10rem;
+    color: white;
+}
+#banner h1{
+    font-size: 1.2rem;
+    margin-top: 1rem;
+    font-family: simsun;
+    margin-left: -20rem;
+}
+#banner h2{
+    font-size: 1rem;
+    font-family: simsun;
+}
